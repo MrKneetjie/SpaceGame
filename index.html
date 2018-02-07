@@ -4,8 +4,8 @@
     <title>MiniDay</title>
   </head>
   <body>
-    <input type="text" id="nickname" value="Player">  <!--NEW-->
-    <button type="button" onclick="setNickname()">Change</button> <!--NEW-->
+    <input type="text" id="nickname" value="Player">
+    <button type="button" onclick="setNickname()">Change</button>
     <canvas id="myCanvas" width="1600" height="1000" style="border:1px solid #000000;"></canvas>
   </body>
   <script src="/socket.io/socket.io.js"></script>
@@ -44,7 +44,6 @@
         }
       }*/
 
-      // NEW FUNCTION
       function setNickname(){
         var name;
         name = document.getElementById("nickname").value;
@@ -62,6 +61,7 @@
         switch(event.keyCode) {
           case 119:
             MovePlayer('up', 10);
+            updateHealth(-10);
             break;
           case 115:
             MovePlayer('down', 10);
@@ -102,7 +102,8 @@
       }
 
       function draw(){
-        writePlayerNames(); // NEW
+        writePlayerNames();
+        drawHealthBars();
         for(i=0; i < playercount; i++){
           drawplayer(players[i].x, players[i].y, players[i].id);
         }
@@ -112,13 +113,42 @@
         ctx.drawImage(images['player'], posX, posY, 64, 64);
       }
 
-      // NEW FUNCTION
       function writePlayerNames(){
         ctx.font = "30px Comic Sans MS";
         ctx.fillStyle = "black";
         ctx.textAlign = "center";
         for(var i = 0; i < playercount; i++){
           ctx.fillText(players[i].name, players[i].x + 64/2, players[i].y - 25);
+        }
+      }
+
+      function updateHealth(amount){
+        for(var i = 0; i < playercount; i++) {
+          if(players[i].id == socket.id) {
+            if(players[i].health + amount <= 0){
+              players[i].health = 0;
+              players[i].dead = true;
+              socket.emit('updateHealth', players[i].health, players[i].dead, socket.id);
+            } else {
+              players[i].health += amount;
+              socket.emit('updateHealth', players[i].health, players[i].dead, socket.id);
+            }
+          }
+        }
+      }
+
+      function drawHealthBars(){
+        for (var i = 0; i < playercount; i++) {
+          var percentage = (64/100) * players[i].health;
+          ctx.beginPath();
+          ctx.fillStyle = "green";
+          ctx.fillRect(players[i].x, players[i].y - 15, percentage, 5);
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.fillStyle = "red";
+          ctx.fillRect(players[i].x + percentage, players[i].y - 15, 64 - percentage, 5);
+          ctx.stroke();
         }
       }
 
@@ -129,13 +159,9 @@
       socket.on('start position', function(posX, posY, playerid){
         if (firstConnection == 0) {
           firstConnection = 1;
-          console.log('player created at pos: ' + posX + ' , ' + posY);
         }
+        console.log('player created at pos: ' + posX + ' , ' + posY);
       });
-
-      setInterval(function(){
-        socket.emit("send stats", dead, socket.id);
-      }, 100);
 
     </script>
 </html>

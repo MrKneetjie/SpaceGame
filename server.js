@@ -19,7 +19,7 @@ app.get('/', function(req, res){
 app.use(express.static(path.join(__dirname, 'public')));
 
 io.on('connection', function(socket){
-  var person = {id:socket.id, name:'player'}; // ADDED NAME
+  var person = {id:socket.id, name:'player', health:100};
   cui.push(person);
 
   totalUsers += 1;
@@ -76,32 +76,40 @@ io.on('connection', function(socket){
     }
   });
 
+  socket.on('updateHealth', function(newHP, died, idp){
+    for(var i = 0; i < totalUsers; i++) {
+      if (cui[i].id == idp) {
+        cui[i].health = newHP;
+        cui[i].dead = died;
+        if(died) {
+          console.log('player died with id: ' + idp);
+          spawn(i);
+        }
+      }
+    }
+  });
+
   socket.on("first connection", function(luca){
     for(var i = 0; i < totalUsers; i++) {
       if (cui[i].fc == null) {
-        var randomx = Math.floor((Math.random() * 1600/tileSize) + tileSize);
-        var randomy = Math.floor((Math.random() * 1000/tileSize) + tileSize);
         cui[i].fc = 1;
-        cui[i].x = randomx;
-        cui[i].y = randomy;
-        socket.emit('start position', cui[i].x * tileSize, cui[i].y * tileSize, cui[i].id);
+        spawn(i);
         break;
       }
     }
   });
 
-  socket.on("send stats", function (dead, playerid){
-    var found = false;
-    for(var i = 0; i < totalUsers; i++) {
-      if (cui[i].id == playerid) {
-        cui[i].dead = dead;
-        found = true;
-        break;
-      }
-    }
-  });
+  function spawn(index){
+    cui[index].health = 100;
+    cui[index].dead = false;
+    var randomx = Math.floor((Math.random() * 1600/tileSize) + tileSize);
+    var randomy = Math.floor((Math.random() * 1000/tileSize) + tileSize);
+    cui[index].x = randomx;
+    cui[index].y = randomy;
+    socket.emit('getarray', cui, totalUsers);
+    socket.emit('start position', cui[index].x * tileSize, cui[index].y * tileSize, cui[index].id);
+  }
 
-  // NEW FUNCTION
   socket.on('setName', function(newName, idp){
     for (var i = 0; i < totalUsers; i++) {
       if(cui[i].id == idp) {

@@ -1,0 +1,23 @@
+# Made using Asset Forge (1.2.5)
+
+:models
+Golf/building_windmill[(0, 0, 0);(0.0, 180.0, 0.0);(1.0, 1.0, 1.0);building_windmill_17;golfBuilding+golfBorder]
+Golf/building_windmill_wings[(0, 0.6, 0.3);(0.0, 180.0, 0.0);(1.0, 1.0, 1.0);building_windmill_wings_18;golfBorder+golfBuilding+_defaultMat]
+
+:materials
+_defaultMat[RGBA(1.000, 1.000, 1.000, 1.000);]
+blueSteel[RGBA(0.141, 0.565, 0.831, 1.000);]
+light[RGBA(1.000, 1.000, 1.000, 1.000);]
+orangeSteel[RGBA(1.000, 0.689, 0.000, 1.000);]
+glass[RGBA(0.298, 0.314, 0.365, 1.000);]
+tire[RGBA(0.298, 0.314, 0.365, 1.000);]
+blade[RGBA(0.875, 0.925, 0.949, 1.000);]
+hilt[RGBA(1.000, 0.683, 0.059, 1.000);]
+handle[RGBA(0.847, 0.620, 0.392, 1.000);]
+golfBorder[RGBA(0.257, 0.551, 0.910, 1.000);]
+golfGreen[RGBA(0.192, 0.949, 0.686, 1.000);]
+golfBuilding[RGBA(1.000, 1.000, 1.000, 1.000);]
+
+:textures
+
+:extra

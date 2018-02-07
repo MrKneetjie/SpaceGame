@@ -1,0 +1,36 @@
+# Made using Asset Forge (1.2.5)
+
+:models
+Vehicles/windshield_sports[(0, 0, 0);(0.0, 180.0, 0.0);(1.0, 1.0, 1.0);windshield_sports_21;_defaultMat+blueSteel+blueSteel+glass]
+Vehicles/hood_default[(0, 0, 1);(0.0, 180.0, 0.0);(1.0, 1.0, 1.0);hood_default_22;_defaultMat+blueSteel+light]
+Vehicles/trunk_defaultHigh[(0, 0, -1);(0.0, 180.0, 0.0);(1.0, 1.0, 1.0);trunk_defaultHigh_23;_defaultMat+blueSteel+blueSteel+glass]
+Vehicles/detail_engine[(0, 0.2, 0.7);(0.0, 180.0, 0.0);(1.0, 1.0, 1.0);detail_engine_24;tire+_defaultMat+lightRed]
+Vehicles/wheel_colored[(1, 0, 0.8);(0.0, 0.0, 0.0);(1.0, 1.0, 1.0);wheel_colored_25;tire+_defaultMat+blueSteel]
+Vehicles/wheel_colored[(1, 0, -1);(0.0, 0.0, 0.0);(1.0, 1.0, 1.0);wheel_colored_26;tire+_defaultMat+blueSteel]
+Vehicles/wheel_colored[(-1, 0, -1);(0.0, 180.0, 0.0);(1.0, 1.0, 1.0);wheel_colored_27;tire+_defaultMat+blueSteel]
+Vehicles/wheel_colored[(-1, 0, 0.8);(0.0, 180.0, 0.0);(1.0, 1.0, 1.0);wheel_colored_28;tire+_defaultMat+blueSteel]
+Vehicles/detail_fender[(1, 0, -1);(0.0, 0.0, 0.0);(1.0, 1.0, 1.0);detail_fender_29;blueSteel]
+Vehicles/detail_fender[(1, 0, 0.8);(0.0, 0.0, 0.0);(1.0, 1.0, 1.0);detail_fender_30;blueSteel]
+Vehicles/detail_fender[(-1, 0, -1);(0.0, 180.0, 0.0);(1.0, 1.0, 1.0);detail_fender_31;blueSteel]
+Vehicles/detail_fender[(-1, 0, 0.8);(0.0, 180.0, 0.0);(1.0, 1.0, 1.0);detail_fender_32;blueSteel]
+Vehicles/detail_policeLights[(0, 0.8, -0.4);(0.0, 180.0, 0.0);(1.0, 1.0, 1.0);detail_policeLights_33;_defaultMat+tire+lightBlue+lightRed]
+
+:materials
+_defaultMat[RGBA(1.000, 1.000, 1.000, 1.000);]
+blueSteel[RGBA(0.141, 0.565, 0.831, 1.000);]
+light[RGBA(1.000, 1.000, 1.000, 1.000);]
+orangeSteel[RGBA(1.000, 0.689, 0.000, 1.000);]
+glass[RGBA(0.298, 0.314, 0.365, 1.000);]
+tire[RGBA(0.298, 0.314, 0.365, 1.000);]
+blade[RGBA(0.875, 0.925, 0.949, 1.000);]
+hilt[RGBA(1.000, 0.683, 0.059, 1.000);]
+handle[RGBA(0.847, 0.620, 0.392, 1.000);]
+golfBorder[RGBA(0.257, 0.551, 0.910, 1.000);]
+golfGreen[RGBA(0.192, 0.949, 0.686, 1.000);]
+golfBuilding[RGBA(1.000, 1.000, 1.000, 1.000);]
+lightRed[RGBA(0.949, 0.373, 0.335, 1.000);]
+lightBlue[RGBA(0.285, 0.562, 0.882, 1.000);]
+
+:textures
+
+:extra

@@ -1,0 +1,12 @@
+{
+  "name": "minidayz",
+  "version": "1.0.0",
+  "description": "A Space Game",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "David Knetemann & Gianluca Van Opstal",
+  "license": "ISC"
+}

@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+  <head>
+    <title>MiniDay</title>
+  </head>
+  <body>
+
+    <canvas id="myCanvas" width="1600" height="1000" style="border:1px solid #000000;"></canvas>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var $ = require('jQuery');
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      var firstConnection = 0;
+      var socket = io();
+      var dead = false;
+      var players = new Array();
+      var playercount;
+      var img = new Image();
+
+      function clearCanvas(){
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.beginPath();
+        ctx.clearRect(0, 0, c.width, c.height);
+      }
+
+      // socket.on("sendImg", function(image){
+      //   console.log(image);
+      //   img = image;
+      // });
+
+      socket.on('user image', image);
+        function image (from, base64Image) {
+        $('#lines').append($('<p>').append($('<b>').text(from),
+        '<img src="' + base64Image + '"/>'));
+          }
+      window.addEventListener('keypress', function(event) {
+        console.log(event.keyCode);
+        switch(event.keyCode) {
+          case 119:
+            socket.emit('keypress', event.keyCode, socket.id);
+            break;
+          case 115:
+            socket.emit('keypress', event.keyCode, socket.id);
+            break;
+          case 100:
+            socket.emit('keypress', event.keyCode, socket.id);
+            break;
+          case 97:
+            socket.emit('keypress', event.keyCode, socket.id);
+            break;
+        }
+      });
+
+      window.addEventListener('keyup', function(event) {
+        switch(event.keyCode) {
+          case 87:
+            socket.emit('keyrelease', event.keyCode, socket.id);
+            break;
+          case 68:
+            socket.emit('keyrelease', event.keyCode, socket.id);
+            break;
+          case 65:
+            socket.emit('keyrelease', event.keyCode, socket.id);
+            break;
+          case 83:
+            socket.emit('keyrelease', event.keyCode, socket.id);
+            break;
+        }
+      });
+
+      setInterval(function(){
+         update();
+         console.log()
+       }, 10);
+
+      function update(){
+        clearCanvas();
+        draw();
+      }
+
+      function draw(){
+        if(playercount != null){
+        for(i=0; i < playercount; i++){
+          drawplayer(players[i].x, players[i].y, players[i].id);
+          }
+        }
+      }
+
+      socket.on("getarray", function(ps, counter){
+        players = ps;
+        playercount = counter;
+      });
+
+      function drawplayer(posX, posY, playerid) {
+        if(playerid == socket.id){
+          ctx.drawImage(img, posX, posY);
+        }
+        else{
+          ctx.drawImage(img, posX, posY);
+     }
+   }
+
+      socket.on("send users", function(){
+        socket.emit('first connection', {});
+      });
+
+      socket.on('start position', function(posX, posY, playerid){
+        if (firstConnection == 0) {
+          firstConnection = 1;
+          console.log('player created at pos: ' + posX + ' , ' + posY);
+        }
+      });
+
+      setInterval(function(){
+        socket.emit("send stats", dead, socket.id);
+      }, 100);
+
+    </script>
+
+</html>

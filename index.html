@@ -1,10 +1,141 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>Test</title>
+    <title>MiniDay</title>
   </head>
   <body>
-    <p>LUCA</p>
+    <input type="text" id="nickname" value="Player">  <!--NEW-->
+    <button type="button" onclick="setNickname()">Change</button> <!--NEW-->
+    <canvas id="myCanvas" width="1600" height="1000" style="border:1px solid #000000;"></canvas>
   </body>
+  <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      var firstConnection = 0;
+      var socket = io();
+      var dead = false;
+      var players = new Array();
+      var playercount;
+
+      var images = {};
+      addImg('player', 'https://i.imgur.com/TFwzAxr.png');
+
+      function addImg(name, url){
+        images[name] = new Image();
+        images[name].onload = function() {
+          resourceLoaded();
+        }
+        images[name].src = url;
+      }
+
+      // Dit hebben we mss nog nodig om later
+      // Images te cachen
+
+      /*var totalResources = 1;
+      var numResourcesLoaded = 0;
+
+      function resourceLoaded() {
+        numResourcesLoaded += 1;
+        if(numResourcesLoaded === totalResources) {
+          setInterval(function(){
+             //update();
+           }, 25);
+        }
+      }*/
+
+      // NEW FUNCTION
+      function setNickname(){
+        var name;
+        name = document.getElementById("nickname").value;
+        socket.emit('setName', name, socket.id);
+      }
+
+      socket.on("getarray", function(ps, counter){
+        players = ps;
+        playercount = counter;
+        clearCanvas();
+        draw();
+      });
+
+      window.addEventListener('keypress', function(event) {
+        switch(event.keyCode) {
+          case 119:
+            MovePlayer('up', 10);
+            break;
+          case 115:
+            MovePlayer('down', 10);
+            break;
+          case 100:
+            MovePlayer('right', 10);
+            break;
+          case 97:
+            MovePlayer('left', 10);
+            break;
+        }
+      });
+
+      function MovePlayer(dir, speed){
+        for(var i = 0; i < playercount; i++) {
+          if(players[i].id == socket.id) {
+            switch (dir) {
+              case 'up':
+                players[i].y -= speed;
+                break;
+              case 'down':
+                players[i].y += speed;
+                break;
+              case 'left':
+                players[i].x -= speed;
+                break;
+              case 'right':
+                players[i].x += speed;
+                break;
+            }
+            socket.emit('checkPos', dir, players[i].x, players[i].y, socket.id);
+          }
+        }
+      }
+
+      function clearCanvas(){
+        ctx.clearRect(0, 0, c.width, c.height);
+      }
+
+      function draw(){
+        writePlayerNames(); // NEW
+        for(i=0; i < playercount; i++){
+          drawplayer(players[i].x, players[i].y, players[i].id);
+        }
+      }
+
+      function drawplayer(posX, posY, playerid) {
+        ctx.drawImage(images['player'], posX, posY, 64, 64);
+      }
+
+      // NEW FUNCTION
+      function writePlayerNames(){
+        ctx.font = "30px Comic Sans MS";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        for(var i = 0; i < playercount; i++){
+          ctx.fillText(players[i].name, players[i].x + 64/2, players[i].y - 25);
+        }
+      }
+
+      socket.on("send users", function(){
+        socket.emit('first connection', {});
+      });
+
+      socket.on('start position', function(posX, posY, playerid){
+        if (firstConnection == 0) {
+          firstConnection = 1;
+          console.log('player created at pos: ' + posX + ' , ' + posY);
+        }
+      });
+
+      setInterval(function(){
+        socket.emit("send stats", dead, socket.id);
+      }, 100);
+
+    </script>
 </html>

@@ -11,6 +11,13 @@ var path = require('path');
 var htmlPath = path.join(__dirname, 'assets');
 var tileSize = 2;
 var maxSpeed = 20;
+var names = [
+  "Rob Bott",
+  "Optimus Prime",
+  "Socket",
+  "Micro",
+  "Norbit"
+];
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
@@ -19,7 +26,8 @@ app.get('/', function(req, res){
 app.use(express.static(path.join(__dirname, 'public')));
 
 io.on('connection', function(socket){
-  var person = {id:socket.id, name:'player', health:100};
+  var randomName = GenerateNickname();
+  var person = {id:socket.id, name:randomName, health:100};
   cui.push(person);
 
   totalUsers += 1;
@@ -75,6 +83,12 @@ io.on('connection', function(socket){
       }
     }
   });
+
+  function GenerateNickname() {
+    var index = Math.floor((Math.random() * names.length) + 1);
+    var nickname = names[index];
+    return nickname;
+  }
 
   socket.on('updateHealth', function(newHP, died, idp){
     for(var i = 0; i < totalUsers; i++) {

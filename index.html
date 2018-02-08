@@ -4,8 +4,11 @@
     <title>MiniDay</title>
   </head>
   <body>
-    <input type="text" id="nickname" value="Player">
-    <button type="button" onclick="setNickname()">Change</button>
+    <div>
+      <input type="text" id="nickname" placeholder="Nickname">
+      <button type="button" onclick="setNickname()">Change</button>
+    </div>
+    <p></p> <!-- TIJDELIJK VOOR WIT-RUIMTE -->
     <canvas id="myCanvas" width="1600" height="1000" style="border:1px solid #000000;"></canvas>
   </body>
   <script src="/socket.io/socket.io.js"></script>
@@ -61,7 +64,6 @@
         switch(event.keyCode) {
           case 119:
             MovePlayer('up', 10);
-            updateHealth(-10);
             break;
           case 115:
             MovePlayer('down', 10);

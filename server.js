@@ -3,7 +3,6 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
-var base64Img = require('base64-img');
 var totalUsers = 0;
 var cui = new Array();
 var playerIsMoving = false;
@@ -85,7 +84,7 @@ io.on('connection', function(socket){
   });
 
   function GenerateNickname() {
-    var index = Math.floor((Math.random() * names.length) + 1);
+    var index = Math.floor((Math.random() * names.length));
     var nickname = names[index];
     return nickname;
   }
@@ -101,6 +100,22 @@ io.on('connection', function(socket){
         }
       }
     }
+  });
+
+  socket.on('getmessage', function(ourmessage, pwhosended, pwhoreceived){
+      var name;
+      var index;
+      for (var i = 0; i < totalUsers; i++) {
+        if(cui[i].id == pwhosended) {
+          name = cui[i].name;
+        }
+        if(cui[i].name == pwhoreceived){
+          index = i;
+        }
+        if(name != null && index != null) {
+          socket.to(cui[index].id).emit('sendmessage', ourmessage, name);
+        }
+      }
   });
 
   socket.on("first connection", function(luca){
